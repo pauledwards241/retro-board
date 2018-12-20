@@ -11,9 +11,12 @@ app.get('/api/hello', (req, res) => {
 });
 
 io.of('board').on('connection', (socket) => {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', (data) => {
-    console.log(data);
+  socket.on('drag', (e) => {
+    socket.broadcast.emit('handleDrag', e);
+  });
+
+  socket.on('dragEnd', (e) => {
+    socket.broadcast.emit('handleDragEnd');
   });
 });
 
