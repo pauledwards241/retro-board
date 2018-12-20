@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
+
 import logo from './logo.svg';
 import './App.css';
 
+const socket = io.connect('http://localhost:8080/board');
+
 class App extends Component {
+  async componentDidMount() {
+    socket.on('news', (data) => {
+      console.log('news');
+      socket.emit('my other event', { my: 'data' });
+    });
+  }
+
+  handleButtonClick = () => {
+    socket.emit('my other event', { payload: 'button click' });
+  };
+
   render() {
     return (
       <div className="App">
@@ -20,6 +35,7 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <button onClick={this.handleButtonClick}>Emit</button>
       </div>
     );
   }
