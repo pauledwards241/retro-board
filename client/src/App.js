@@ -1,104 +1,106 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+import List from './List/List';
 
 import './App.css';
 
-const socket = io.connect('http://localhost:8080/board');
+const socket = io.connect('http://localhost:3001/board');
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+const generateId = () => {
+  const min = 1;
+  const max = 100000;
+  const rand = Math.random() * (max - min) + min;
 
-  return result;
+  return Math.floor(rand).toString();
+};
+
+const generateList = (i) => {
+  return new Map([
+    [(i + 1).toString(), 'note'],
+    [(i + 2).toString(), 'note'],
+    [(i + 3).toString(), 'note'],
+  ]);
 };
 
 class App extends Component {
   state = {
-    dragItem: null,
-    items: [
-      { content: 'Item 1', id: 1 },
-      { content: 'Item 2', id: 2 },
-      { content: 'Item 3', id: 3 }
-    ],
+    locked: {},
+    list1: generateList(0),
+    list2: generateList(3),
+    list3: generateList(6),
   };
 
-  async componentDidMount() {
-    socket.on('handleDrag', ({ x, y }) => {
+  componentDidMount() {
+    socket.on('handleAdd', ({ listId, noteId }) => {
       this.setState({
-        dragItem: { x, y },
-      })
+        [listId]: this.state[listId].set(noteId, ''),
+      });
     });
 
-    socket.on('handleDragEnd', () => {
+    socket.on('handleFocus', (id) => {
+      const { locked } = this.state;
+
       this.setState({
-        dragItem: null,
-      })
+        locked: { ...locked, [id]: true },
+      });
+    });
+
+    socket.on('handleBlur', ({ content, listId, noteId }) => {
+      const { locked } = this.state;
+
+      const reduceLocked = (acc, cur) =>
+        cur !== noteId ? { ...acc, [cur]: true } : acc;
+
+      const amended = Object.keys(locked).reduce(reduceLocked, {});
+
+      this.setState({
+        [listId]: this.state[listId].set(noteId, content),
+        locked: amended,
+      });
     });
   }
 
-  onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
+  handleAddNote = (listId) => {
+    const noteId = generateId();
 
-    const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index
-    );
+    socket.emit('add', { listId, noteId });
+  };
 
-    window.removeEventListener('mousemove', this.emitCoords);
-    socket.emit('dragEnd');
-
+  handleChangeNote = (listId, noteId, content) => {
     this.setState({
-      items,
-    });
+      [listId]: this.state[listId].set(noteId, content),
+    })
   };
 
-  onDragStart = (e) => {
-    window.addEventListener('mousemove', this.emitCoords);
+  handleFocusNote = (noteId) => {
+    socket.emit('focus', noteId);
   };
-  
-  emitCoords = ({ offsetX: x, offsetY: y }) => {
-    // Throttle
-    socket.emit('drag', { x, y });
+
+  handleBlurNote = (listId, noteId, content) => {
+    socket.emit('blur', { content, listId, noteId });
   };
 
   render() {
-    const { dragItem } = this.state;
+    const { locked } = this.state;
+
+    const lists = [ 'list1', 'list2', 'list3' ];
 
     return (
-      <React.Fragment>
-      {dragItem && <div className="item" style={{ position: 'absolute', left: dragItem.x, top: dragItem.y }}></div>}
-      <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-          >
-            {this.state.items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <li
-                    className="item"
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    {item.content}
-                  </li>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    </React.Fragment>
+      <div>
+        {lists.map(listId => (
+          <List
+            id={listId}
+            key={listId}
+            locked={locked}
+            notes={this.state[listId]}
+            onAddNote={this.handleAddNote}
+            onBlurNote={this.handleBlurNote}
+            onChangeNote={this.handleChangeNote}
+            onFocusNote={this.handleFocusNote}
+          />
+        ))}
+    </div>
     );
   }
 }
