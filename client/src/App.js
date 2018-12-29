@@ -5,7 +5,7 @@ import List from './List/List';
 
 import './App.css';
 
-const url = process.env.ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
+const url = process.env.NODE_ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
 const socket = io.connect(url);
 
 const generateId = () => {
