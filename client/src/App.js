@@ -87,7 +87,7 @@ class App extends Component {
     const lists = [ 'list1', 'list2', 'list3' ];
 
     return (
-      <div>
+      <div class="lists">
         {lists.map(listId => (
           <List
             id={listId}
