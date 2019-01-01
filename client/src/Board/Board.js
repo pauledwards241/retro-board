@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import io from 'socket.io-client';
 
-import List from './List/List';
+import List from '../List/List';
 
-import style from './App.module.css';
+import style from './Board.module.css';
 
 const url = process.env.NODE_ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
 const socket = io.connect(url);
@@ -24,7 +24,7 @@ const generateList = (i) => {
   ]);
 };
 
-class App extends Component {
+class Board extends PureComponent {
   state = {
     locked: {},
     list1: generateList(0),
@@ -111,4 +111,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Board;
