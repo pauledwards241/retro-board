@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 import List from './List/List';
 
-import './App.css';
+import style from './App.module.css';
 
 const url = process.env.NODE_ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
 const socket = io.connect(url);
@@ -19,8 +19,8 @@ const generateId = () => {
 const generateList = (i) => {
   return new Map([
     [(i + 1).toString(), 'note'],
-    [(i + 2).toString(), 'note'],
-    [(i + 3).toString(), 'note'],
+    // [(i + 2).toString(), 'note'],
+    // [(i + 3).toString(), 'note'],
   ]);
 };
 
@@ -30,6 +30,7 @@ class App extends Component {
     list1: generateList(0),
     list2: generateList(3),
     list3: generateList(6),
+    selectedNoteId: null,
   };
 
   componentDidMount() {
@@ -65,6 +66,7 @@ class App extends Component {
   handleAddNote = (listId) => {
     const noteId = generateId();
 
+    this.setState({ selectedNoteId: noteId });
     socket.emit('add', { listId, noteId });
   };
 
@@ -75,20 +77,22 @@ class App extends Component {
   };
 
   handleFocusNote = (noteId) => {
+    this.setState({ selectedNoteId: noteId });
     socket.emit('focus', noteId);
   };
 
   handleBlurNote = (listId, noteId, content) => {
+    this.setState({ selectedNoteId: null });
     socket.emit('blur', { content, listId, noteId });
   };
 
   render() {
-    const { locked } = this.state;
+    const { locked, selectedNoteId } = this.state;
 
     const lists = [ 'list1', 'list2', 'list3' ];
 
     return (
-      <div class="lists">
+      <div className={style.lists}>
         {lists.map(listId => (
           <List
             id={listId}
@@ -99,6 +103,7 @@ class App extends Component {
             onBlurNote={this.handleBlurNote}
             onChangeNote={this.handleChangeNote}
             onFocusNote={this.handleFocusNote}
+            selectedNoteId={selectedNoteId}
           />
         ))}
     </div>

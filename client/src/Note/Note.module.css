@@ -1,0 +1,40 @@
+.note {
+  cursor: pointer;
+  color: #000;
+  background: #ffff99;
+  padding: 1em;
+  box-shadow: 0 4px 3px #aaa;
+  box-sizing: border-box;
+  transform: rotate(-2deg);
+  min-height: 12em;
+  width: 12em;
+  margin-bottom: 2em;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  transition: 0.4s;
+}
+
+.note:nth-child(2n) {
+  transform: rotate(2deg);
+}
+
+.note.selected {
+  transform: scale(1.25);
+  z-index: 1;
+}
+
+.disabled {
+  background-color: black;
+}
+
+.editor {
+  cursor: pointer;
+  font-family: 'Kalam', cursive;
+  font-size: 1em;
+  resize: none;
+  background-color: transparent;
+  border-style: none;
+  box-sizing: border-box;
+  outline: none;
+}
