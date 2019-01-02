@@ -13,7 +13,7 @@ app.get('/api/hello', (req, res) => {
 
 io.of('board').on('connection', (socket) => {
   socket.on('add', (data) => {
-    io.of('board').emit('handleAdd', data);
+    socket.broadcast.emit('handleAdd', data);
   });
 
   socket.on('focus', (noteId) => {
@@ -23,14 +23,6 @@ io.of('board').on('connection', (socket) => {
   socket.on('blur', (data) => {
     socket.broadcast.emit('handleBlur', data);
   });
-
-  // socket.on('drag', (e) => {
-  //   socket.broadcast.emit('handleDrag', e);
-  // });
-
-  // socket.on('dragEnd', (e) => {
-  //   socket.broadcast.emit('handleDragEnd');
-  // });
 });
 
 

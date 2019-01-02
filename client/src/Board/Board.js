@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import io from 'socket.io-client';
 
 import List from '../List/List';
@@ -8,14 +8,6 @@ import style from './Board.module.css';
 const url = process.env.NODE_ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
 const socket = io.connect(url);
 
-const generateId = () => {
-  const min = 1;
-  const max = 100000;
-  const rand = Math.random() * (max - min) + min;
-
-  return Math.floor(rand).toString();
-};
-
 const generateList = (i) => {
   return new Map([
     [(i + 1).toString(), 'note'],
@@ -24,20 +16,18 @@ const generateList = (i) => {
   ]);
 };
 
-class Board extends PureComponent {
+class Board extends Component {
   state = {
-    locked: {},
     list1: generateList(0),
     list2: generateList(3),
     list3: generateList(6),
+    locked: {},
     selectedNoteId: null,
   };
 
   componentDidMount() {
     socket.on('handleAdd', ({ listId, noteId }) => {
-      this.setState({
-        [listId]: this.state[listId].set(noteId, ''),
-      });
+      this.addNote(listId, noteId, false);
     });
 
     socket.on('handleFocus', (id) => {
@@ -63,10 +53,19 @@ class Board extends PureComponent {
     });
   }
 
-  handleAddNote = (listId) => {
-    const noteId = generateId();
+  addNote = (listId, noteId, isSelected) => {
+    const { selectedNoteId } = this.state;
 
-    this.setState({ selectedNoteId: noteId });
+    this.setState({
+      [listId]: this.state[listId].set(noteId, ''),
+      selectedNoteId: isSelected ? noteId : selectedNoteId,
+    });
+  };
+
+  handleAddNote = (listId) => {
+    const noteId = (+new Date()).toString();
+
+    this.addNote(listId, noteId, true);
     socket.emit('add', { listId, noteId });
   };
 

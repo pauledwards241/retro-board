@@ -1,5 +1,6 @@
 import React, { createRef, PureComponent } from 'react';
 import classnames from 'classnames';
+import { CSSTransition } from 'react-transition-group';
 
 import style from './Note.module.css';
 
@@ -52,7 +53,7 @@ class Note extends PureComponent {
   };
 
   render() {
-    const { isLocked, isSelected, value } = this.props;
+    const { isLocked, isSelected, onBlur, onChange, onFocus, value, ...rest } = this.props;
 
     const className = classnames({
       [style.note]: true,
@@ -60,19 +61,26 @@ class Note extends PureComponent {
       [style.selected]: isSelected,
     });
 
+    const transitionClassNames = {
+      enter: style.enter,
+      enterActive: style.enterActive,
+    };
+
     return (
-      <li className={className} onClick={this.handleClickNote}>
-        <textarea
-          className={style.editor}
-          columns="1"
-          onBlur={this.handleBlurNote}
-          onChange={this.handleChangeNote}
-          onFocus={this.handleFocusNote}
-          ref={this.editorRef}
-          rows="1"
-          value={value}>
-        </textarea>
-      </li>
+      <CSSTransition {...rest} classNames={transitionClassNames} timeout={1000}>
+        <li className={className} onClick={this.handleClickNote}>
+          <textarea
+            className={style.editor}
+            columns="1"
+            onBlur={this.handleBlurNote}
+            onChange={this.handleChangeNote}
+            onFocus={this.handleFocusNote}
+            ref={this.editorRef}
+            rows="1"
+            value={value}>
+          </textarea>
+        </li>
+      </CSSTransition>
     )
   }
 }

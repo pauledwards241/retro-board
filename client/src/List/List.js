@@ -1,4 +1,5 @@
 import React from 'react';
+import { TransitionGroup } from 'react-transition-group';
 
 import Note from '../Note/Note';
 
@@ -28,7 +29,7 @@ const List = ({
 
   return (
     <div>
-      <ul className={style.list}>
+      <TransitionGroup appear={false} component="ul" className={style.list}>
         {Array.from(notes).map(([key, value]) => (
           <Note
             id={key}  
@@ -41,9 +42,9 @@ const List = ({
             value={value}
           />
         ))}
-      </ul>
+      </TransitionGroup>
       <button className={style.placeholder} onClick={handleAddNote}>
-        Add new note
+        Add note...
       </button>
     </div>
   )
