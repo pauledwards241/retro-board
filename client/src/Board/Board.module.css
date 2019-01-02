@@ -1,5 +1,20 @@
-.lists {
+.wall {
+  background: #ccc;
+  min-height: 100vh;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.board {
   display: flex;
   justify-content: space-around;
   padding: 2em;
+  border-image: linear-gradient(to bottom right, #b6996e, #a9977b);
+  border-image-slice: 1;
+  border-style: solid;
+  border-width: 12px;
+  box-shadow: 0 0 1px 2px #847867;
+  min-height: 95vh;
+  box-sizing: border-box;
+  background-color: #333;
 }

@@ -3,9 +3,8 @@
   color: #000;
   background: #ffff99;
   padding: 1em;
-  box-shadow: 0 4px 3px #aaa;
   box-sizing: border-box;
-  transform: rotate(-2deg);
+  transform: rotate(-1deg);
   min-height: 12em;
   width: 12em;
   margin-bottom: 2em;
@@ -16,11 +15,11 @@
 }
 
 .note:nth-child(2n) {
-  transform: rotate(2deg);
+  transform: rotate(1deg);
 }
 
 .note.selected {
-  transform: scale(1.25);
+  transform: scale(1.2);
   z-index: 1;
 }
 

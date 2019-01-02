@@ -28,7 +28,7 @@ const List = ({
   };
 
   return (
-    <div>
+    <div className={style.listContainer}>
       <TransitionGroup appear={false} component="ul" className={style.list}>
         {Array.from(notes).map(([key, value]) => (
           <Note

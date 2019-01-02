@@ -1,7 +1,11 @@
+.listContainer {
+  margin: 0 1em;
+}
+
 .list {
   list-style-type: none;
   padding: 0;
-  margin: 0 1em;
+  margin: 0;
 }
 
 .placeholder {
@@ -10,7 +14,8 @@
   font-size: 1em;
   width: 12em;
   height: 12em;
-  border: 5px dashed #ccc;
+  border: 5px dashed #ddd;
   border-radius: 5px;
-  background-color: #fefefe;
+  color: #ddd;
+  background-color: transparent;
 }

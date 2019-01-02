@@ -91,21 +91,23 @@ class Board extends Component {
     const lists = [ 'list1', 'list2', 'list3' ];
 
     return (
-      <div className={style.lists}>
-        {lists.map(listId => (
-          <List
-            id={listId}
-            key={listId}
-            locked={locked}
-            notes={this.state[listId]}
-            onAddNote={this.handleAddNote}
-            onBlurNote={this.handleBlurNote}
-            onChangeNote={this.handleChangeNote}
-            onFocusNote={this.handleFocusNote}
-            selectedNoteId={selectedNoteId}
-          />
-        ))}
-    </div>
+      <div className={style.wall}>
+        <div className={style.board}>
+          {lists.map(listId => (
+            <List
+              id={listId}
+              key={listId}
+              locked={locked}
+              notes={this.state[listId]}
+              onAddNote={this.handleAddNote}
+              onBlurNote={this.handleBlurNote}
+              onChangeNote={this.handleChangeNote}
+              onFocusNote={this.handleFocusNote}
+              selectedNoteId={selectedNoteId}
+            />
+          ))}
+        </div>
+      </div>
     );
   }
 }
