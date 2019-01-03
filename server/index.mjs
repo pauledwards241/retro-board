@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import http from 'http';
 import socketIO from 'socket.io';
 
@@ -28,10 +27,10 @@ io.of('board').on('connection', (socket) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use(express.static('../client/build'));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    res.sendFile('../client/build/index.html');
   });
 }
 
