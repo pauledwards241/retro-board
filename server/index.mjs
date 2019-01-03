@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'http';
+import path from 'path';
 import socketIO from 'socket.io';
 
 import NoteManager from './NoteManager';
@@ -30,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../client/build'));
 
   app.get('*', (req, res) => {
-    res.sendFile('../client/build/index.html', { root: '.' });
+    res.sendFile(path.resolve('../client/build/index.html'));
   });
 }
 
