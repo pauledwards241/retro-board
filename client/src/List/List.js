@@ -14,6 +14,7 @@ const List = ({
   onChangeNote,
   onFocusNote,
   selectedNoteId,
+  title,
 }) => {
   const handleAddNote = () => {
     onAddNote(id);
@@ -29,6 +30,7 @@ const List = ({
 
   return (
     <div className={style.listContainer}>
+      <header className={style.header}>{title}</header>
       <TransitionGroup appear={false} component="ul" className={style.list}>
         {Array.from(notes).map(([key, value]) => (
           <Note

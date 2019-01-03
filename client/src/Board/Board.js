@@ -88,22 +88,32 @@ class Board extends Component {
   render() {
     const { locked, selectedNoteId } = this.state;
 
-    const lists = [ 'list1', 'list2', 'list3' ];
+    const lists = [{
+      id: 'list1',
+      title: 'Happy',
+    }, {
+      id: 'list2',
+      title: 'Sad',
+     }, {
+      id: 'list3',
+      title: 'Challenges',
+    }];
 
     return (
       <div className={style.wall}>
         <div className={style.board}>
-          {lists.map(listId => (
+          {lists.map(list => (
             <List
-              id={listId}
-              key={listId}
+              id={list.id}
+              key={list.id}
               locked={locked}
-              notes={this.state[listId]}
+              notes={this.state[list.id]}
               onAddNote={this.handleAddNote}
               onBlurNote={this.handleBlurNote}
               onChangeNote={this.handleChangeNote}
               onFocusNote={this.handleFocusNote}
               selectedNoteId={selectedNoteId}
+              title={list.title}
             />
           ))}
         </div>
