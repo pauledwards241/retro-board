@@ -6,13 +6,11 @@ import List from '../List/List';
 import style from './Board.module.css';
 
 const url = process.env.NODE_ENV === 'production' ? 'https://media-molecule.herokuapp.com/board' : 'http://localhost:3001/board';
-const socket = io.connect(url);
+const socket = io(url);
 
 const generateList = (i) => {
   return new Map([
     [(i + 1).toString(), 'note'],
-    // [(i + 2).toString(), 'note'],
-    // [(i + 3).toString(), 'note'],
   ]);
 };
 
