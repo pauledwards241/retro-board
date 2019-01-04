@@ -52,8 +52,15 @@ class Note extends PureComponent {
     this.resizeEditor();
   };
 
+  handleDeleteNote = (e) => {
+    const { id } = this.props;
+
+    e.stopPropagation();
+    this.props.onDelete(id);
+  };
+
   render() {
-    const { isLocked, isSelected, onBlur, onChange, onFocus, value, ...rest } = this.props;
+    const { in: transitionIn, isLocked, isSelected, onExited, value } = this.props;
 
     const className = classnames({
       [style.note]: true,
@@ -64,11 +71,21 @@ class Note extends PureComponent {
     const transitionClassNames = {
       enter: style.enter,
       enterActive: style.enterActive,
+      exitActive: style.exitActive,
     };
 
     return (
-      <CSSTransition {...rest} classNames={transitionClassNames} timeout={1000}>
+      <CSSTransition
+        classNames={transitionClassNames}
+        in={transitionIn}
+        onExited={onExited}
+        timeout={1000}>
         <li className={className} onClick={this.handleClickNote}>
+        
+            <button className={style.close} onClick={this.handleDeleteNote}>
+              ✕<span>Delete</span>
+            </button>
+
           <textarea
             className={style.editor}
             columns="1"

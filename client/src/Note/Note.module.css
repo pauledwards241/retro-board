@@ -1,4 +1,5 @@
 .note {
+  position: relative;
   cursor: pointer;
   color: #000;
   background: #ffff99;
@@ -27,6 +28,20 @@
   background-color: black;
 }
 
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  outline: none;
+  border-style: none;
+  background-color: transparent;
+}
+
+.close span {
+  display: none;
+}
+
 .editor {
   cursor: pointer;
   font-family: 'Kalam', cursive;
@@ -50,4 +65,12 @@
   height: 12em;
   min-height: 12em;
   padding: 1em;
+}
+
+.exitActive {
+  opacity: 0;
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
 }

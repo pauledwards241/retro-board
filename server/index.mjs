@@ -16,6 +16,10 @@ io.of('board').on('connection', (socket) => {
     socket.broadcast.emit('handleAdd', data);
   });
 
+  socket.on('delete', (listId, noteId) => {
+    socket.broadcast.emit('note deleted', listId, noteId);
+  });
+
   socket.on('focus', (noteId) => {
     noteManager.lockNote(noteId);
     socket.broadcast.emit('handleFocus', noteId);

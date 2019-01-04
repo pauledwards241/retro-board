@@ -12,6 +12,7 @@ const List = ({
   onAddNote,
   onBlurNote,
   onChangeNote,
+  onDeleteNote,
   onFocusNote,
   selectedNoteId,
   title,
@@ -28,10 +29,14 @@ const List = ({
     onChangeNote(id, noteId, value);
   };
 
+  const handleDeleteNote = (noteId) => {
+    onDeleteNote(id, noteId);
+  };
+
   return (
     <div className={style.listContainer}>
       <header className={style.header}>{title}</header>
-      <TransitionGroup appear={false} component="ul" className={style.list}>
+      <TransitionGroup component="ul" className={style.list}>
         {Array.from(notes).map(([key, value]) => (
           <Note
             id={key}  
@@ -40,6 +45,7 @@ const List = ({
             key={key}
             onBlur={handleBlurNote}
             onChange={handleChangeNote}
+            onDelete={handleDeleteNote}
             onFocus={onFocusNote}
             value={value}
           />

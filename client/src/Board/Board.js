@@ -28,6 +28,10 @@ class Board extends Component {
       this.addNote(listId, noteId, false);
     });
 
+    socket.on('note deleted', (listId, noteId) => {
+      this.deleteNote(listId, noteId);
+    });
+
     socket.on('handleFocus', (id) => {
       const { locked } = this.state;
 
@@ -60,11 +64,31 @@ class Board extends Component {
     });
   };
 
+  deleteNote = (listId, noteId) => {
+    const list = this.state[listId];
+    list.delete(noteId);
+
+    const reduceLocked = (acc, cur) =>
+        cur !== noteId ? { ...acc, [cur]: true } : acc;
+
+    const amended = Object.keys(this.state.locked).reduce(reduceLocked, {});
+
+    this.setState({
+      [listId]: list,
+      locked: amended,
+    });
+  };
+
   handleAddNote = (listId) => {
     const noteId = (+new Date()).toString();
 
     this.addNote(listId, noteId, true);
     socket.emit('add', { listId, noteId });
+  };
+
+  handleDeleteNote = (listId, noteId) => {
+    this.deleteNote(listId, noteId);
+    socket.emit('delete', listId, noteId);
   };
 
   handleChangeNote = (listId, noteId, content) => {
@@ -109,6 +133,7 @@ class Board extends Component {
               onAddNote={this.handleAddNote}
               onBlurNote={this.handleBlurNote}
               onChangeNote={this.handleChangeNote}
+              onDeleteNote={this.handleDeleteNote}
               onFocusNote={this.handleFocusNote}
               selectedNoteId={selectedNoteId}
               title={list.title}
