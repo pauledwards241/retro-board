@@ -12,7 +12,17 @@ class Note extends PureComponent {
 
     if (!isSelected) return;
 
+    // Focus the editor when adding a new note
     this.focusEditor();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isSelected } = this.props;
+
+    if (isSelected || prevProps.value === this.props.value) return;
+
+    // Resize the editor if a note has been changed elsewhere
+    this.resizeEditor();
   }
 
   focusEditor = () => {
