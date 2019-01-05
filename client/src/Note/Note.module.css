@@ -24,10 +24,6 @@
   z-index: 1;
 }
 
-.disabled {
-  background-color: black;
-}
-
 .close {
   position: absolute;
   right: 0;

@@ -2,6 +2,8 @@ import React, { createRef, PureComponent } from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 
+import Mask from '../Mask/Mask';
+
 import style from './Note.module.css';
 
 class Note extends PureComponent {
@@ -74,7 +76,6 @@ class Note extends PureComponent {
 
     const className = classnames({
       [style.note]: true,
-      [style.disabled]: isLocked,
       [style.selected]: isSelected,
     });
 
@@ -91,7 +92,7 @@ class Note extends PureComponent {
         onExited={onExited}
         timeout={1000}>
         <li className={className} onClick={this.handleClickNote}>
-        
+        {isLocked && <Mask />}
             <button className={style.close} onClick={this.handleDeleteNote}>
               ✕<span>Delete</span>
             </button>
