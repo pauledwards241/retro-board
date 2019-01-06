@@ -92,11 +92,10 @@ class Note extends PureComponent {
         onExited={onExited}
         timeout={1000}>
         <li className={className} onClick={this.handleClickNote}>
-        {isLocked && <Mask />}
-            <button className={style.close} onClick={this.handleDeleteNote}>
-              ✕<span>Delete</span>
-            </button>
-
+          {isLocked && <Mask />}
+          <button className={style.close} onClick={this.handleDeleteNote}>
+            ✕<span>Delete</span>
+          </button>
           <textarea
             className={style.editor}
             columns="1"
