@@ -1,14 +1,9 @@
 .listContainer {
-  padding: 0 1em 1em 1em;
-  flex-grow: 1;
+  padding-bottom: 2em;
+  flex: 1 0 0;
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-right: 1px solid #ddd;
-}
-
-.listContainer:last-child {
-  border-right-style: none;
 }
 
 .header {
@@ -18,7 +13,8 @@
   border-bottom: 2px dashed #ddd;
   padding-bottom: 0.5rem;
   margin: 0 auto 2rem auto;
-  width: 14rem;
+  width: 100%;
+  max-width: 14rem;
   text-align: center
 }
 
@@ -26,16 +22,31 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  max-width: 12em;
 }
 
 .placeholder {
+  display: block;
   cursor: pointer;
   font-family: 'Kalam', cursive;
   font-size: 1em;
-  width: 12em;
+  width: 100%;
+  max-width: 12em;
   height: 12em;
   border: 5px dashed #ddd;
   border-radius: 5px;
   color: #ddd;
   background-color: transparent;
+}
+
+@media (min-width: 900px) {
+  .listContainer {
+    border-right: 1px solid #ddd;
+    padding: 0 1em 1em 1em;
+  }
+
+  .listContainer:last-child {
+    border-right-style: none;
+  }
 }

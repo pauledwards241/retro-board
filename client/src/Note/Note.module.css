@@ -6,8 +6,9 @@
   padding: 1em;
   box-sizing: border-box;
   transform: rotate(-1deg);
+  width: 100%;
   min-height: 12em;
-  width: 12em;
+  max-width: 12em;
   margin-bottom: 2em;
   display: flex;
   align-content: center;
@@ -31,9 +32,10 @@
   cursor: pointer;
   border-style: none;
   background-color: transparent;
-  padding: 0.5em 0.85em;
+  padding: 0.45em 0.8em;
   color: #555;
   font-weight: bold;
+  font-size: 0.85em;
 }
 
 .close span {

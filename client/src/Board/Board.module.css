@@ -6,8 +6,6 @@
 }
 
 .board {
-  display: flex;
-  justify-content: space-around;
   padding: 2em;
   border-image: linear-gradient(to bottom right, #b6996e, #a9977b);
   border-image-slice: 1;
@@ -19,4 +17,11 @@
   box-sizing: border-box;
   background-color: #333;
   margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .board {
+    display: flex;
+    justify-content: space-around;
+  }
 }
