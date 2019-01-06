@@ -2,31 +2,27 @@ import express from 'express';
 import http from 'http';
 import socketIO from 'socket.io';
 
-import NoteManager from './NoteManager';
-
 const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
 
 const port = process.env.PORT || 3001;
-const noteManager = new NoteManager();
 
 io.of('board').on('connection', (socket) => {
-  socket.on('add', (data) => {
-    socket.broadcast.emit('handleAdd', data);
+  socket.on('note added', (listId, noteId) => {
+    socket.broadcast.emit('on note added', listId, noteId);
   });
 
-  socket.on('delete', (listId, noteId) => {
-    socket.broadcast.emit('note deleted', listId, noteId);
+  socket.on('note deleted', (listId, noteId) => {
+    socket.broadcast.emit('on note deleted', listId, noteId);
   });
 
-  socket.on('focus', (noteId) => {
-    noteManager.lockNote(noteId);
-    socket.broadcast.emit('handleFocus', noteId);
+  socket.on('note locked', (noteId) => {
+    socket.broadcast.emit('on note locked', noteId);
   });
 
-  socket.on('blur', (data) => {
-    socket.broadcast.emit('handleBlur', data);
+  socket.on('note unlocked', (listId, noteId, content) => {
+    socket.broadcast.emit('on note unlocked', listId, noteId, content);
   });
 });
 
