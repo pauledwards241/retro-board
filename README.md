@@ -1,44 +1,73 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Sprint retrospective board
 
-## Available Scripts
+An attempt at creating an online, interactive sprint retrospective board. Post-it notes can be added to and removed from the following three columns on a chalkboard:
 
-In the project directory, you can run:
+* Happy - *What went well*
+* Sad - *What didn't go well*
+* Challenges - *Any challenges encountered*
 
-### `npm start`
+Other users are notified in real time when notes have been added, removed and also when one is being edited.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I wanted to create an attractive and fun representation of a real-life event at work. Also, who doesn't love a good chalkboard?! :-) The application is also fully keyboard accessible.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+A running version of the app can be seen here [Retrospective board](https://media-molecule.herokuapp.com).
 
-### `npm test`
+It can also be run locally after the repository has been cloned and dependencies installed by executing `yarn dev`. It expects a global installation of `yarn` and `nodemon`.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Architecture
 
-### `npm run build`
+The following components have been created:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`<Board />` - This is the top-level custom component. It handles rendering the three lists and any state updates.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+`<List />` - This represents one of the columns and handles the addition of new notes.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`<Note />` - Represents a Post-it note. It handles editing and deleting notes. All state change requests are propagated back up to the `<Board />` component.
 
-### `npm run eject`
+`<Mask />` - Covers (locks) the `<Note />` component when another user is editing it.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The following utility modules were also created:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`EventsManager.js` - This encapsulates all of the socket behaviour. It accepts event callbacks from the `<Board />` component.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`StateManager.js` - This module has a number of methods which accept the current state and changes from event handlers in the `<Board />` component. State is updated in an immutable fashion and returned back to the React component.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Additional libraries
 
-## Learn More
+[Create React App](https://github.com/facebook/create-react-app) - Used to quickly bootstrap a React application using webpack as a development server. A Node.js/Express application was added to handle receiving and broadcasting events.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[Socket.IO](https://github.com/socketio/socket.io) / [Socket.IO client](https://github.com/socketio/socket.io-client) - Handles real time updates between users.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[React transition group](https://github.com/reactjs/react-transition-group) - Used for transitions when adding or removing notes.
+
+[Classnames](https://github.com/JedWatson/classnames) - Allows a simpler notation when using conditional classes.
+
+## Limitations and further developments
+
+### Data persistence
+
+Currently data is not persisted on the server. If one user was to add some notes in their session and another user was to join afterwards, the new user would not see existing changes. However, they would see any further changes. This would be the next thing I would implement.
+
+### Error handling
+
+...Doesn't really exist. There is no resilience if an event fails to be sent to or from the server. Again, this is where persisting data on the server would help to ensure data is not lost if a client loses their network connection.
+
+### One instance only
+
+Currently, only one instance of the board can be run. This could be resolved by having a module on the server managing multiple boards. This could then broadcast available boards at the point the client connects and also allow a new one to be created. Any pushes from the client would then provide the board ID along with any other data.
+
+### State management
+
+The app uses local state in the `<Board />` component. If the app was to become more complex e.g. multiple boards, I would implement a state management library such as Redux.
+
+### Responsiveness
+
+Hmm... It looks OK on a small screen and a large screen, but there is a dark place in between where it doesn't look great. This is something that could be refined with some more time and experimentation.
+
+### Browser support
+
+This has only really been tested with the latest versions of the following browsers:
+
+* Chrome (desktop)
+* Chrome (mobile)
+* Safari (mobile)
