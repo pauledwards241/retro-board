@@ -6,9 +6,9 @@ An attempt at creating an online, interactive sprint retrospective board. Post-i
 * Sad - *What didn't go well*
 * Challenges - *Any challenges encountered*
 
-Other users are notified in real time when notes have been added, removed and also when one is being edited.
+Other users are notified in real time when notes have been added, removed and also when one is being edited. The app is fully keyboard accessible.
 
-I wanted to create an attractive and fun representation of a real-life event at work. Also, who doesn't love a good chalkboard?! :-) The application is also fully keyboard accessible.
+I wanted to create an attractive and fun representation of a real-life event at work. Also, who doesn't love a good chalkboard?! :-)
 
 A running version of the app can be seen here [Retrospective board](https://media-molecule.herokuapp.com).
 
