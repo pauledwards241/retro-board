@@ -71,3 +71,7 @@ This has only really been tested with the latest versions of the following brows
 * Chrome (desktop)
 * Chrome (mobile)
 * Safari (mobile)
+
+### Unit tests
+
+There are none :-( With more time, I would add full coverage of components and utilities.
