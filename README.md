@@ -75,3 +75,7 @@ This has only really been tested with the latest versions of the following brows
 ### Unit tests
 
 There are none :-( With more time, I would add full coverage of components and utilities.
+
+### Types
+
+There is no type checking. As a minimum, I'd add proptypes, but would love to implement more robust type-checking through TypeScript.
